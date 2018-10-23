@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Quotes</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'belt/css/index.css' %}">
+</head>
+
+<body>
+    <div class='container'>
+        <div class='navbar'>
+            <h2>Welcome {{user.first_name}}</h2>
+            <a href='/myaccount/{{user.id}}'>Edit My Account</a>
+            <a href='/logout'>Logout</a>
+        </div>
+        <h2>Quotes</h2>
+        <div class='qblock'>
+            {% for quote in quotes %}
+            <div class='qbox'>
+              <p> {{quote.author}}: "{{quote.content}}"</p>
+                <p>Posted By: <a href='/user/{{quote.creator.id}}'>{{quote.creator.first_name}}</a></p>
+                <p>{{quote.likes.count}} 
+                {% if quote.likes.count == 1 %}
+                Person liked this
+                {% else %}
+                People liked this
+                {% endif %}
+                {% if user in quote.likes.all %}
+                <a href='/dislike/{{quote.id}}' class='like'>Disike</a></p>
+                {% else %}
+                <a href='/like/{{quote.id}}' class='like'>Like</a></p>
+                {% endif %}
+                {% if quote.creator.id == user.id %}
+                <a href='/delete/{{quote.id}}'>Delete</a>
+                {% endif %}
+            </div>
+            {% endfor %}
+
+        </div>
+        <div class='addbox'>
+            <form action='/add' method='post'>
+                {% csrf_token %}
+                <h3>Author: <input type='text' name='author'></h3>
+                <h3>Quote: </h3>
+                <textarea cols='50' rows='4' name='content'></textarea>
+                <p><input type='submit'></p>
+            </form>
+            {% if messages %}
+            {% for message in messages %}
+            <p class='error'>{{message}}</p>
+            {% endfor %}
+            {% endif %}
+        </div>
+
+
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{{user.first_name}}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'belt/css/index.css' %}">
+</head>
+
+<body>
+    <div class='container'>
+        <div class='navbar'>
+            <h2>{{user.first_name}}'s Quotes</h2>
+            <a href='/quotes'>Back</a>
+            <a href='/logout'>Logout</a>
+        </div>
+        <div class='qblock'>
+            {% for quote in quotes %}
+            <div class='qbox'>
+                {{quote.author}}: "{{quote.content}}"
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+
+</body>
+
+</html>
